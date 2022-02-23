@@ -1,23 +1,33 @@
-import logo from './logo.svg';
+import {useState} from 'react'
 import './App.css';
-
+import AddTask from './components/AddTask';
+import AllTasks from './components/AllTasks';
 function App() {
+  const [allTasks, setAllTasks] = useState('');
+  
+  const fetchNewTask = (task) => {
+    setAllTasks((prevTasks) => {
+      return [task, ...prevTasks];
+    })
+  }
+
+  const removeTask = (taskIdx) => {
+    console.log(taskIdx)
+    const newAllTasks = allTasks.filter((currTask, currTaskId) => {
+      return taskIdx*1 !== currTaskId;
+    })
+    console.log(newAllTasks)
+    // console.log(allTasks)
+    setAllTasks(newAllTasks);
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <header>
+            <h1>Todomatic</h1>
+        </header>
+        <AddTask passToRoot={fetchNewTask}/>
+        <AllTasks allTasks={allTasks} removeTask={removeTask}/>          
     </div>
   );
 }
